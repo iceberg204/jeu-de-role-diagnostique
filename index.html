@@ -22,14 +22,6 @@
         h1 {
             color: #0073e6;
         }
-        .image-container {
-            margin: 20px 0;
-        }
-        img {
-            width: 100%;
-            max-width: 400px;
-            border-radius: 8px;
-        }
         button {
             padding: 10px 20px;
             margin: 10px;
@@ -63,15 +55,16 @@
     <div class="container">
         <h1>Jeu de Rôle - Diagnostic Dermatologique</h1>
         <p>Vous remarquez un grain de beauté sur votre bras qui semble changer d'apparence.</p>
-        <div class="image-container">
-            <img src="https://raw.githubusercontent.com/iceberg204/jeu-de-role-diagnostique/main/grain-de-beaute.png" alt="Image d'un grain de beauté suspect">
-        </div>
         <p>Que faites-vous ?</p>
         <button class="yes-btn" onclick="diagnosticPerso()">Je fais mon propre diagnostic</button>
         <button class="no-btn" onclick="laisserMedecin()">Je consulte un médecin</button>
         
         <div id="result" class="result"></div>
         <p id="source" class="source"></p>
+        <div id="nextStep" class="result" style="display: none;"></div>
+        <button id="continueBtn" style="display: none;" onclick="nextDecision()">Continuer</button>
+        <button id="nextAIQuestion" style="display: none;" onclick="showAIQuestion()">Passer à la suite</button>
+        <div id="aiQuestion" class="result" style="display: none;"></div>
     </div>
     
     <script>
@@ -80,13 +73,49 @@
             document.getElementById("source").innerHTML = "🔎 Selon une étude menée par des étudiants de l'UCLouvain auprès de leur entourage.";
             document.getElementById("result").style.display = "block";
             document.getElementById("source").style.display = "block";
+            document.getElementById("nextAIQuestion").style.display = "block";
         }
+        
         function laisserMedecin() {
             document.getElementById("result").innerHTML = "📊 85% des patients préfèrent consulter un médecin. Vous êtes comme la majorité des gens !";
             document.getElementById("source").innerHTML = "🔎 Selon une étude menée par des étudiants de l'UCLouvain auprès de leur entourage.";
             document.getElementById("result").style.display = "block";
             document.getElementById("source").style.display = "block";
+            document.getElementById("continueBtn").style.display = "block";
+        }
+        
+        function nextDecision() {
+            document.getElementById("nextStep").style.display = "block";
+            document.getElementById("continueBtn").style.display = "none";
+            
+            let nextStepText = "🏥 Vous consultez un médecin qui examine votre grain de beauté mais ne trouve rien d’inquiétant.\n\n" +
+                               "📱 En rentrant chez vous, inquiet, vous utilisez une application de diagnostic dermatologique. L’IA vous alerte sur un risque de mélanome !\n\n" +
+                               "❓ Êtes-vous prêt(e) à demander une nouvelle vérification par un médecin ?";
+            
+            document.getElementById("nextStep").innerText = nextStepText;
+            document.getElementById("nextStep").innerHTML += '<br><br><button class="yes-btn" onclick="finalDecision()">Oui, je consulte à nouveau</button>';
+        }
+        
+        function finalDecision() {
+            document.getElementById("nextStep").innerHTML = "✅ Vous décidez de reconsulter un médecin pour confirmation.\n\n" +
+                                                            "📊 100% des personnes interrogées dans cette enquête menée par des étudiants de l'UCLouvain ont fait le même choix.";
+            document.getElementById("nextAIQuestion").style.display = "block";
+        }
+        
+        function showAIQuestion() {
+            document.getElementById("nextAIQuestion").style.display = "none";
+            document.getElementById("aiQuestion").style.display = "block";
+            document.getElementById("aiQuestion").innerHTML = "🤖 Pensez-vous que les intelligences artificielles vont remplacer les dermatologues prochainement ?" +
+                '<br><br><button class="yes-btn" onclick="aiResponse(false)">Oui</button>' +
+                ' <button class="no-btn" onclick="aiResponse(true)">Non</button>';
+        }
+        
+        function aiResponse(correct) {
+            let response = correct ? "✅ Correct ! Les IA peuvent aider mais ne remplacent pas l'expertise et le jugement clinique d'un médecin !" :
+                                    "❌ Faux ! Les IA ne peuvent pas remplacer l'expertise et le jugement clinique d'un médecin !";
+            document.getElementById("aiQuestion").innerHTML = response + '<br><br><a href="https://uclouvain-my.sharepoint.com/personal/mohamed_elhajoui_student_uclouvain_be/Documents/Master%201%20Q2/Travail%20TECHNO.docx?web=1" target="_blank">📖 Lire le travail pour approfondir le sujet</a>';
         }
     </script>
 </body>
 </html>
+
