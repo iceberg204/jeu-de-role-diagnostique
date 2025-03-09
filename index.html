@@ -64,7 +64,7 @@
         <h1>Jeu de Rôle - Diagnostic Dermatologique</h1>
         <p>Vous remarquez un grain de beauté sur votre bras qui semble changer d'apparence.</p>
         <div class="image-container">
-            <img src="https://raw.githubusercontent.com/tonpseudo/jeu-role-diagnostic/main/grain-de-beaute.jpg" alt="Image d'un grain de beauté suspect">
+            <img src="https://raw.githubusercontent.com/iceberg204/jeu-de-role-diagnostique/main/grain-de-beaute.png" alt="Image d'un grain de beauté suspect">
         </div>
         <p>Que faites-vous ?</p>
         <button class="yes-btn" onclick="diagnosticPerso()">Je fais mon propre diagnostic</button>
@@ -72,8 +72,6 @@
         
         <div id="result" class="result"></div>
         <p id="source" class="source"></p>
-        <div id="nextStep" class="result" style="display: none;"></div>
-        <button id="continueBtn" style="display: none;" onclick="nextDecision()">Continuer</button>
     </div>
     
     <script>
@@ -83,30 +81,11 @@
             document.getElementById("result").style.display = "block";
             document.getElementById("source").style.display = "block";
         }
-        
         function laisserMedecin() {
             document.getElementById("result").innerHTML = "📊 85% des patients préfèrent consulter un médecin. Vous êtes comme la majorité des gens !";
             document.getElementById("source").innerHTML = "🔎 Selon une étude menée par des étudiants de l'UCLouvain auprès de leur entourage.";
             document.getElementById("result").style.display = "block";
             document.getElementById("source").style.display = "block";
-            document.getElementById("continueBtn").style.display = "block";
-        }
-        
-        function nextDecision() {
-            document.getElementById("nextStep").style.display = "block";
-            document.getElementById("continueBtn").style.display = "none";
-            
-            let nextStepText = "🏥 Vous consultez un médecin qui examine votre grain de beauté mais ne trouve rien d’inquiétant.\n\n" +
-                               "📱 En rentrant chez vous, inquiet, vous utilisez une application de diagnostic dermatologique. L’IA vous alerte sur un risque de mélanome !\n\n" +
-                               "❓ Êtes-vous prêt(e) à demander une nouvelle vérification par un médecin ?";
-            
-            document.getElementById("nextStep").innerText = nextStepText;
-            document.getElementById("nextStep").innerHTML += '<br><br><button class="yes-btn" onclick="finalDecision()">Oui, je consulte à nouveau</button>';
-        }
-        
-        function finalDecision() {
-            document.getElementById("nextStep").innerHTML = "✅ Vous décidez de reconsulter un médecin pour confirmation.\n\n" +
-                                                            "📊 100% des personnes interrogées dans cette enquête menée par des étudiants de l'UCLouvain ont fait le même choix.";
         }
     </script>
 </body>
