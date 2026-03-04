@@ -7,10 +7,8 @@
 
 <style>
 :root{
-  /* mêmes couleurs qu’avant */
   --text:#0b1b2b;
 
-  /* améliorations design (ne changent pas la palette) */
   --card: rgba(255,255,255,.78);
   --card2: rgba(255,255,255,.62);
   --stroke: rgba(11,27,43,.10);
@@ -21,22 +19,29 @@
 }
 
 *{box-sizing:border-box}
-html,body{height:100%}
 
-body{
-  margin:0;
-  font-family: system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
-  color:var(--text);
-
-  /* même fond, inchangé */
+/* Fond homogène sur toute la page */
+html{
+  min-height:100%;
   background:
     radial-gradient(900px 600px at 20% 10%, rgba(255,255,255,.9), transparent 60%),
     radial-gradient(700px 500px at 80% 20%, rgba(220,240,255,.9), transparent 60%),
     linear-gradient(180deg,#6bb6ff,#dff1ff);
+  background-repeat:no-repeat;
+  background-attachment:fixed;
+}
+
+body{
+  margin:0;
+  min-height:100vh;
+  font-family: system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+  color:var(--text);
+
+  background:transparent;
 
   display:flex;
-  align-items:center;
   justify-content:center;
+  align-items:flex-start;
   padding:28px;
 }
 
@@ -47,7 +52,6 @@ body{
   padding:44px 42px;
   border-radius:var(--radius);
 
-  /* glass plus clean */
   background: linear-gradient(180deg, var(--card), var(--card2));
   border: 1px solid var(--stroke);
   backdrop-filter: blur(10px);
@@ -57,7 +61,6 @@ body{
   overflow:hidden;
 }
 
-/* petite touche “premium” sans changer la couleur */
 .container::before{
   content:"";
   position:absolute;
@@ -97,7 +100,9 @@ h1{
 
 .subtitle::before{
   content:"";
-  width:8px;height:8px;border-radius:999px;
+  width:8px;
+  height:8px;
+  border-radius:999px;
   background: rgba(11,27,43,.55);
   opacity:.45;
 }
@@ -114,7 +119,9 @@ p{
   font-weight:600;
 }
 
-.case span{display:block}
+.case span{
+  display:block;
+}
 
 .dilemma{
   margin:0 0 10px;
@@ -134,7 +141,6 @@ p{
   gap:12px;
 }
 
-/* boutons plus clean, même couleur globale */
 button{
   padding:14px 16px;
   border-radius:var(--radius2);
@@ -147,7 +153,7 @@ button{
   letter-spacing:-.01em;
 
   box-shadow: 0 10px 22px rgba(0,0,0,.08);
-  transition: transform .14s ease, box-shadow .14s ease, background .14s ease, border-color .14s ease;
+  transition: transform .14s ease, box-shadow .14s ease, border-color .14s ease;
 }
 
 button:hover{
@@ -158,11 +164,6 @@ button:hover{
 
 button:active{
   transform: translateY(0) scale(.99);
-}
-
-button:focus-visible{
-  outline:none;
-  box-shadow: 0 0 0 3px rgba(11,27,43,.12), 0 16px 30px rgba(0,0,0,.10);
 }
 
 .screen{
@@ -194,11 +195,16 @@ button:focus-visible{
 }
 
 @keyframes fadeIn{
-  from{opacity:0; transform:translateY(16px)}
-  to{opacity:1; transform:translateY(0)}
+  from{
+    opacity:0;
+    transform:translateY(16px)
+  }
+  to{
+    opacity:1;
+    transform:translateY(0)
+  }
 }
 
-/* responsive */
 @media (max-width:520px){
   body{padding:18px}
   .container{padding:34px 22px}
@@ -213,51 +219,56 @@ button:focus-visible{
 
 <div class="container">
 
-  <div id="question" class="screen">
-    <h1>Décision aux urgences</h1>
-    <div class="subtitle">Service d'orthopédie</div>
+<div id="question" class="screen">
 
-    <p>Un patient âgé atteint de démence arrive avec une fracture du col du fémur.</p>
+<h1>Décision aux urgences</h1>
 
-    <p class="case">
-      <span>Homme, 89 ans</span>
-      <span>Démence avancée</span>
-      <span>Chute à domicile</span>
-    </p>
-    
-    <img src="jambe.png" style="width:250px; margin:20px;">
-    
-    <p class="dilemma">Le patient n'est pas capable de donner un consentement éclairé.</p>
+<div class="subtitle">Service d'orthopédie</div>
 
-    <div class="divider"></div>
+<p>Un patient âgé atteint de démence arrive avec une fracture du col du fémur.</p>
 
-    <p>Que faites-vous ?</p>
+<p class="case">
+<span>Homme, 89 ans</span>
+<span>Démence avancée</span>
+<span>Chute à domicile</span>
+</p>
 
-    <div class="choices">
-      <button type="button" onclick="choose()">Opérer</button>
-      <button type="button" onclick="choose()">Ne pas opérer</button>
-      <button type="button" onclick="choose()">Attendre</button>
-    </div>
-  </div>
+<img src="jambe.png" style="width:250px; margin:20px;" alt="Illustration fracture">
 
-  <div id="final" class="final">
-    Cette décision soulève plusieurs questions éthiques.
-    <small>Le travail propose une réflexion approfondie sur les enjeux liés à ce choix.</small>
-  </div>
+<p class="dilemma">
+Le patient n'est pas capable de donner un consentement éclairé.
+</p>
+
+<div class="divider"></div>
+
+<p>Que faites-vous ?</p>
+
+<div class="choices">
+<button onclick="choose()">Opérer</button>
+<button onclick="choose()">Ne pas opérer</button>
+<button onclick="choose()">Attendre</button>
+</div>
+
+</div>
+
+<div id="final" class="final">
+Votre décision révèle une position face à un dilemme éthique.
+<small>Nous vous invitons à lire notre travail afin d’approfondir la réflexion sur les enjeux soulevés par cette situation.</small>
+</div>
 
 </div>
 
 <script>
 function choose(){
-  const q = document.getElementById("question");
-  const f = document.getElementById("final");
+const q = document.getElementById("question");
+const f = document.getElementById("final");
 
-  q.classList.add("hidden");
+q.classList.add("hidden");
 
-  setTimeout(()=>{
-    q.style.display="none";
-    f.style.display="block";
-  },380);
+setTimeout(()=>{
+q.style.display="none";
+f.style.display="block";
+},380);
 }
 </script>
 
