@@ -1,543 +1,152 @@
 <!doctype html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Jeu de rôle – Choix éthique</title>
-  <meta name="description" content="Jeu de rôle interactif : patient âgé dément, fracture du col du fémur. Choisissez une option et poursuivez la réflexion éthique." />
-  <style>
-    :root{
-      --bg1:#0b1020;
-      --bg2:#0a2a3a;
-      --card:rgba(255,255,255,.08);
-      --card2:rgba(255,255,255,.06);
-      --stroke:rgba(255,255,255,.12);
-      --text:rgba(255,255,255,.92);
-      --muted:rgba(255,255,255,.72);
-      --muted2:rgba(255,255,255,.55);
-      --shadow: 0 20px 60px rgba(0,0,0,.35);
-      --shadow2: 0 10px 30px rgba(0,0,0,.25);
-      --radius: 22px;
-      --radius2: 16px;
-      --focus: 0 0 0 3px rgba(255,255,255,.18);
-    }
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Jeu de rôle – décision clinique</title>
 
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
-      color:var(--text);
-      background:
-        radial-gradient(1200px 700px at 20% 10%, rgba(120,160,255,.22), transparent 60%),
-        radial-gradient(900px 600px at 90% 20%, rgba(60,220,200,.14), transparent 55%),
-        radial-gradient(1000px 700px at 50% 110%, rgba(255,160,120,.12), transparent 55%),
-        linear-gradient(180deg, var(--bg1), var(--bg2));
-      overflow-x:hidden;
-    }
+<style>
+:root{
+  --text:#0b1b2b;
+}
 
-    .wrap{max-width:1100px; margin:0 auto; padding:32px 18px 60px;}
+*{box-sizing:border-box}
 
-    header{
-      display:flex; gap:16px; align-items:flex-start; justify-content:space-between;
-      margin:8px 0 22px;
-    }
-    .brand{
-      display:flex; flex-direction:column; gap:6px;
-    }
-    .kicker{
-      display:inline-flex; gap:8px; align-items:center;
-      width:fit-content;
-      padding:8px 12px;
-      background:linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.06));
-      border:1px solid var(--stroke);
-      border-radius:999px;
-      backdrop-filter: blur(10px);
-      box-shadow: var(--shadow2);
-      color:var(--muted);
-      font-size:13px;
-    }
-    .kicker .dot{width:8px; height:8px; border-radius:99px; background:rgba(120,220,200,.9); box-shadow: 0 0 0 6px rgba(120,220,200,.14);} 
+body{
+  margin:0;
+  font-family: system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+  color:var(--text);
 
-    h1{margin:0; font-weight:800; letter-spacing:-.02em; font-size:clamp(26px, 3.6vw, 40px); line-height:1.05;}
-    .sub{margin:0; color:var(--muted); max-width:56ch; font-size:clamp(14px, 1.5vw, 16px); line-height:1.55;}
+  background:
+    radial-gradient(900px 600px at 20% 10%, rgba(255,255,255,.9), transparent 60%),
+    radial-gradient(700px 500px at 80% 20%, rgba(220,240,255,.9), transparent 60%),
+    linear-gradient(180deg,#6bb6ff,#dff1ff);
 
-    .layout{
-      display:grid;
-      grid-template-columns: 1.2fr .8fr;
-      gap:16px;
-      align-items:stretch;
-    }
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  height:100vh;
+}
 
-    @media (max-width: 920px){
-      .layout{grid-template-columns: 1fr;}
-      header{flex-direction:column;}
-    }
+.container{
+  text-align:center;
+  max-width:650px;
+  padding:40px;
+  background:rgba(255,255,255,.75);
+  backdrop-filter:blur(8px);
+  border-radius:20px;
+  box-shadow:0 20px 50px rgba(0,0,0,.15);
+}
 
-    .card{
-      background:linear-gradient(180deg, var(--card), var(--card2));
-      border:1px solid var(--stroke);
-      border-radius:var(--radius);
-      box-shadow: var(--shadow);
-      overflow:hidden;
-      position:relative;
-    }
+h1{
+  margin:0 0 8px;
+  font-size:28px;
+}
 
-    .card::before{
-      content:"";
-      position:absolute;
-      inset:-2px;
-      background:
-        radial-gradient(600px 300px at 10% 0%, rgba(120,160,255,.18), transparent 60%),
-        radial-gradient(600px 300px at 90% 20%, rgba(60,220,200,.16), transparent 55%);
-      pointer-events:none;
-      opacity:.9;
-      filter:saturate(1.05);
-    }
+.subtitle{
+  font-size:14px;
+  opacity:.7;
+  margin-bottom:25px;
+}
 
-    .card > *{position:relative}
+p{
+  line-height:1.6;
+}
 
-    .panelHead{
-      padding:18px 18px 12px;
-      display:flex; align-items:center; justify-content:space-between; gap:10px;
-      border-bottom:1px solid rgba(255,255,255,.08);
-    }
+.choices{
+  margin-top:25px;
+  display:grid;
+  gap:12px;
+}
 
-    .badge{
-      display:inline-flex; align-items:center; gap:8px;
-      padding:8px 10px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.12);
-      background:rgba(255,255,255,.06);
-      color:var(--muted);
-      font-size:12.5px;
-    }
+button{
+  padding:14px;
+  border-radius:12px;
+  border:none;
+  background:#ffffff;
+  cursor:pointer;
+  font-size:15px;
+  transition:transform .15s ease, box-shadow .15s ease;
+}
 
-    .badge svg{opacity:.9}
+button:hover{
+  transform:translateY(-2px);
+  box-shadow:0 10px 20px rgba(0,0,0,.1);
+}
 
-    .content{padding:18px;}
+.screen{
+  transition:opacity .4s ease, transform .4s ease;
+}
 
-    .grid2{display:grid; grid-template-columns: 1fr; gap:12px;}
+.hidden{
+  opacity:0;
+  transform:translateY(-20px);
+  pointer-events:none;
+}
 
-    .chat{
-      background:rgba(0,0,0,.18);
-      border:1px solid rgba(255,255,255,.10);
-      border-radius:var(--radius2);
-      padding:14px;
-      min-height:340px;
-      display:flex; flex-direction:column; gap:10px;
-    }
+.final{
+  display:none;
+  font-size:26px;
+  font-weight:500;
+  animation:fadeIn .6s ease forwards;
+}
 
-    .bubble{
-      max-width: 88%;
-      padding:10px 12px;
-      border-radius:18px;
-      border:1px solid rgba(255,255,255,.12);
-      background:rgba(255,255,255,.06);
-      color:var(--text);
-      line-height:1.45;
-      box-shadow: 0 8px 18px rgba(0,0,0,.18);
-      animation: pop .25s ease-out both;
-    }
+@keyframes fadeIn{
+  from{opacity:0; transform:translateY(20px)}
+  to{opacity:1; transform:translateY(0)}
+}
 
-    .bubble.muted{color:var(--muted)}
-
-    .bubble.patient{
-      border-top-left-radius:8px;
-    }
-
-    .bubble.you{
-      margin-left:auto;
-      background: rgba(120,220,200,.10);
-      border-color: rgba(120,220,200,.22);
-      border-top-right-radius:8px;
-    }
-
-    .meta{
-      display:flex; align-items:center; justify-content:space-between; gap:10px;
-      font-size:12px;
-      color:var(--muted2);
-      margin-top:4px;
-    }
-
-    .choiceRow{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap:10px;
-      margin-top:12px;
-    }
-
-    .btn{
-      width:100%;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      padding:12px 14px;
-      border-radius:16px;
-      border:1px solid rgba(255,255,255,.14);
-      background:rgba(255,255,255,.06);
-      color:var(--text);
-      cursor:pointer;
-      box-shadow: 0 10px 22px rgba(0,0,0,.18);
-      transition: transform .12s ease, background .12s ease, border-color .12s ease;
-      text-align:left;
-    }
-
-    .btn:hover{transform: translateY(-1px); background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.22)}
-    .btn:active{transform: translateY(0px) scale(.99)}
-    .btn:focus-visible{outline:none; box-shadow: var(--focus), 0 10px 22px rgba(0,0,0,.18);}
-
-    .btn .left{display:flex; flex-direction:column; gap:2px;}
-    .btn .title{font-weight:750; letter-spacing:-.01em;}
-    .btn .desc{font-size:12.5px; color:var(--muted)}
-
-    .btn .chev{
-      width:34px; height:34px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.14);
-      background:rgba(0,0,0,.18);
-      display:grid; place-items:center;
-      flex:0 0 auto;
-      opacity:.95;
-    }
-
-    .side{
-      display:flex; flex-direction:column; gap:12px;
-    }
-
-    .facts{
-      padding:16px;
-      background:rgba(0,0,0,.12);
-      border:1px solid rgba(255,255,255,.10);
-      border-radius:var(--radius2);
-    }
-
-    .facts h2{
-      font-size:14px;
-      letter-spacing:-.01em;
-      margin:0 0 10px;
-      color:var(--text);
-    }
-
-    .facts ul{margin:0; padding-left:18px; color:var(--muted); line-height:1.6; font-size:13.5px;}
-
-    .note{
-      padding:16px;
-      border-radius:var(--radius2);
-      border:1px dashed rgba(255,255,255,.18);
-      background:rgba(255,255,255,.05);
-      color:var(--muted);
-      font-size:13.5px;
-      line-height:1.55;
-    }
-
-    .result{
-      display:none;
-      margin-top:14px;
-      padding:14px;
-      border-radius:18px;
-      border:1px solid rgba(255,255,255,.16);
-      background: rgba(255,255,255,.06);
-      box-shadow: 0 14px 30px rgba(0,0,0,.20);
-    }
-
-    .result.show{display:block; animation: fadeUp .25s ease-out both;}
-
-    .result h3{margin:0 0 8px; font-size:15px; letter-spacing:-.01em;}
-    .result p{margin:0 0 10px; color:var(--muted); line-height:1.55;}
-
-    .cta{
-      display:flex; flex-wrap:wrap; gap:10px; align-items:center;
-      margin-top:10px;
-    }
-
-    a.ctaLink{
-      display:inline-flex; align-items:center; gap:10px;
-      padding:10px 12px;
-      border-radius:14px;
-      border:1px solid rgba(120,220,200,.22);
-      background: rgba(120,220,200,.10);
-      color:var(--text);
-      text-decoration:none;
-      font-weight:700;
-      transition: transform .12s ease, background .12s ease;
-    }
-    a.ctaLink:hover{transform: translateY(-1px); background: rgba(120,220,200,.14)}
-    a.ctaLink:focus-visible{outline:none; box-shadow: var(--focus)}
-
-    .smallBtn{
-      padding:10px 12px;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,.16);
-      background: rgba(255,255,255,.06);
-      color:var(--text);
-      cursor:pointer;
-      font-weight:700;
-    }
-    .smallBtn:hover{background: rgba(255,255,255,.08)}
-    .smallBtn:focus-visible{outline:none; box-shadow: var(--focus)}
-
-    footer{
-      margin-top:18px;
-      color:var(--muted2);
-      font-size:12.5px;
-      display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:space-between;
-    }
-
-    code.inline{
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      font-size: 12px;
-      color: rgba(255,255,255,.86);
-      background: rgba(0,0,0,.22);
-      border: 1px solid rgba(255,255,255,.10);
-      padding: 2px 6px;
-      border-radius: 8px;
-      white-space: nowrap;
-    }
-
-    @keyframes fadeUp{from{opacity:0; transform: translateY(6px)} to{opacity:1; transform: translateY(0)}}
-    @keyframes pop{from{opacity:0; transform: scale(.98) translateY(4px)} to{opacity:1; transform: scale(1) translateY(0)}}
-
-    .sr-only{
-      position:absolute; width:1px; height:1px; padding:0; margin:-1px;
-      overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;
-    }
-  </style>
+</style>
 </head>
+
 <body>
-  <div class="wrap">
-    <header>
-      <div class="brand">
-        <div class="kicker"><span class="dot" aria-hidden="true"></span> Jeu de rôle clinique • choix éthique</div>
-        <h1>Vous êtes de garde aux urgences.</h1>
-        <p class="sub">Un patient âgé, atteint de démence, arrive avec une <strong>fracture du col du fémur</strong>. Vous devez décider : <strong>opérer</strong>, <strong>ne pas opérer</strong>, ou <strong>attendre</strong>. Ensuite, on bascule vers une réflexion éthique plus profonde.</p>
-      </div>
-    </header>
 
-    <main class="layout" aria-live="polite">
-      <section class="card" aria-label="Scène interactive">
-        <div class="panelHead">
-          <div class="badge" title="Mise en situation">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M12 22s8-4 8-10V6l-8-4-8 4v6c0 6 8 10 8 10Z" stroke="rgba(255,255,255,.78)" stroke-width="1.7"/>
-              <path d="M9 12h6" stroke="rgba(255,255,255,.78)" stroke-width="1.7" stroke-linecap="round"/>
-              <path d="M12 9v6" stroke="rgba(255,255,255,.78)" stroke-width="1.7" stroke-linecap="round"/>
-            </svg>
-            <span>Urgences • Orthopédie</span>
-          </div>
-          <div class="badge" title="Accessibilité">
-            <span aria-hidden="true">⌘</span>
-            <span>Navigation clavier OK</span>
-          </div>
-        </div>
+<div class="container">
 
-        <div class="content">
-          <div class="grid2">
-            <div class="chat" id="chat" role="log" aria-label="Conversation">
-              <div class="bubble patient"><strong>Infirmier·e :</strong> Docteur, il est tombé à domicile. Douleur ++, jambe en rotation externe. Il est confus, antécédents de démence.</div>
-              <div class="bubble patient"><strong>Patient :</strong> Où est ma femme ? Je… j’ai mal… laissez-moi rentrer.</div>
-              <div class="bubble patient muted"><strong>Radio :</strong> fracture du col du fémur (suspectée), bilan pré-op à discuter.</div>
-              <div class="meta">
-                <span>Votre décision influence la suite du scénario.</span>
-                <span><code class="inline">1</code> choix unique</span>
-              </div>
-            </div>
+<div id="question" class="screen">
 
-            <div>
-              <div class="choiceRow" aria-label="Choix">
-                <button class="btn" data-choice="operate" type="button">
-                  <span class="left">
-                    <span class="title">Opérer</span>
-                    <span class="desc">Soulager rapidement, réduire complications d’alitement, mais risques péri-opératoires.</span>
-                  </span>
-                  <span class="chev" aria-hidden="true">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                      <path d="M9 18l6-6-6-6" stroke="rgba(255,255,255,.8)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                  </span>
-                </button>
+<h1>Décision aux urgences</h1>
+<div class="subtitle">Service d'orthopédie</div>
 
-                <button class="btn" data-choice="nope" type="button">
-                  <span class="left">
-                    <span class="title">Ne pas opérer</span>
-                    <span class="desc">Limiter gestes invasifs, mais douleur et perte d’autonomie majeures possibles.</span>
-                  </span>
-                  <span class="chev" aria-hidden="true">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                      <path d="M9 18l6-6-6-6" stroke="rgba(255,255,255,.8)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                  </span>
-                </button>
+<p>
+Un patient âgé atteint de démence arrive avec une fracture du col du fémur.
+</p>
 
-                <button class="btn" data-choice="wait" type="button">
-                  <span class="left">
-                    <span class="title">Attendre</span>
-                    <span class="desc">Gagner du temps (avis, famille, comorbidités), mais retarder peut aggraver le pronostic.</span>
-                  </span>
-                  <span class="chev" aria-hidden="true">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                      <path d="M9 18l6-6-6-6" stroke="rgba(255,255,255,.8)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                  </span>
-                </button>
-              </div>
+<p>
+Que faites‑vous ?
+</p>
 
-              <div class="result" id="result" aria-label="Résultat">
-                <h3 id="resultTitle">Votre choix</h3>
-                <p id="resultText"></p>
-                <div class="cta">
-                  <!-- Remplacez WORK_URL par le lien vers votre travail -->
-                  <a class="ctaLink" id="workLink" href="#" target="_blank" rel="noopener">
-                    Lire le travail • réflexion éthique
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                      <path d="M14 3h7v7" stroke="rgba(255,255,255,.85)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                      <path d="M10 14 21 3" stroke="rgba(255,255,255,.85)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                      <path d="M21 14v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6" stroke="rgba(255,255,255,.55)" stroke-width="2" stroke-linecap="round"/>
-                    </svg>
-                  </a>
-                  <button class="smallBtn" id="restart" type="button">Recommencer</button>
-                </div>
-                <p class="sr-only" id="liveAnnounce" aria-live="assertive"></p>
-              </div>
-            </div>
-          </div>
+<div class="choices">
+<button onclick="choose()">Opérer</button>
+<button onclick="choose()">Ne pas opérer</button>
+<button onclick="choose()">Attendre</button>
+</div>
 
-          <footer>
-            <span>Astuce : utilisez <code class="inline">Tab</code> puis <code class="inline">Entrée</code> pour choisir.</span>
-            <span>⚠️ Scénario pédagogique : pas un avis médical.</span>
-          </footer>
-        </div>
-      </section>
+</div>
 
-      <aside class="side" aria-label="Contexte">
-        <section class="card" style="border-radius: var(--radius);">
-          <div class="panelHead">
-            <div class="badge">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M12 8v4l3 3" stroke="rgba(255,255,255,.78)" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" stroke="rgba(255,255,255,.55)" stroke-width="1.7"/>
-              </svg>
-              <span>Éléments clés</span>
-            </div>
-          </div>
-          <div class="content">
-            <div class="facts">
-              <h2>Ce que vous savez (pour le jeu)</h2>
-              <ul>
-                <li>Patient âgé, démence connue, coopération fluctuante.</li>
-                <li>Douleur importante, risque de delirium +++.</li>
-                <li>Fracture du col du fémur : enjeu de mobilité, douleur, mortalité.</li>
-                <li>Décision sous contrainte : temps, informations incomplètes, entourage parfois absent.</li>
-              </ul>
-            </div>
-            <div class="note" style="margin-top:12px;">
-              <strong>Objectif :</strong> ressentir la tension du choix, puis passer à une analyse éthique structurée (autonomie, bénéfice/risque, justice, proportionnalité, qualité de vie, consentement substitué…).
-              <div style="margin-top:10px; opacity:.9;">
-                <span>À personnaliser :</span>
-                <ul style="margin:8px 0 0; padding-left:18px;">
-                  <li>remplacer le lien <code class="inline">href="#"</code> par l’URL de votre travail</li>
-                  <li>adapter les messages selon vos objectifs pédagogiques</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </section>
-      </aside>
-    </main>
-  </div>
+<div id="final" class="final">
+Pour aller plus loin, lisez le travail afin d'explorer la réflexion éthique approfondie que soulève ce choix.
+</div>
 
-  <script>
-    // === Configuration ===
-    // Collez ici l'URL de votre travail (PDF, page web, etc.)
-    const WORK_URL = "#";
+</div>
 
-    const chat = document.getElementById('chat');
-    const result = document.getElementById('result');
-    const resultTitle = document.getElementById('resultTitle');
-    const resultText = document.getElementById('resultText');
-    const restartBtn = document.getElementById('restart');
-    const workLink = document.getElementById('workLink');
-    const liveAnnounce = document.getElementById('liveAnnounce');
+<script>
 
-    workLink.href = WORK_URL;
+function choose(){
 
-    const choiceCopy = {
-      operate: {
-        you: "Vous : On prépare le patient pour une chirurgie, idéalement rapidement.",
-        patient: "Patient : Je veux pas… j’ai peur… vous êtes qui ?",
-        title: "Choix : Opérer",
-        text: "Votre décision privilégie souvent la réduction de la douleur et des complications liées à l’alitement, tout en acceptant un risque péri-opératoire et la question du consentement chez un patient confus. Pour aller plus loin, lisez le travail : il propose une réflexion éthique approfondie sur ce type de décision." 
-      },
-      nope: {
-        you: "Vous : On s’oriente vers une prise en charge non chirurgicale et un traitement antalgique maximal.",
-        patient: "Patient : J’ai mal… je peux pas bouger…",
-        title: "Choix : Ne pas opérer",
-        text: "Votre décision met l’accent sur la limitation des actes invasifs, mais soulève des enjeux forts autour de la douleur, de la perte d’autonomie et de la proportionnalité des soins. Pour aller plus loin, lisez le travail : il propose une réflexion éthique approfondie sur ce type de décision." 
-      },
-      wait: {
-        you: "Vous : On temporise : bilan, avis, discussion avec la famille / représentant, et réévaluation.",
-        patient: "Patient : Pourquoi j’attends ? J’ai froid…",
-        title: "Choix : Attendre",
-        text: "Votre décision cherche à mieux informer le choix (avis, comorbidités, volonté présumée), mais le délai peut aggraver douleur, delirium et complications. Pour aller plus loin, lisez le travail : il propose une réflexion éthique approfondie sur ce type de décision." 
-      }
-    };
+const q = document.getElementById("question");
+const f = document.getElementById("final");
 
-    function addBubble(text, who){
-      const div = document.createElement('div');
-      div.className = `bubble ${who}`;
-      div.textContent = text;
-      chat.appendChild(div);
-      chat.scrollTop = chat.scrollHeight;
-    }
+q.classList.add("hidden");
 
-    function lockChoices(isLocked){
-      document.querySelectorAll('[data-choice]').forEach(btn => {
-        btn.disabled = isLocked;
-        btn.style.opacity = isLocked ? .55 : 1;
-        btn.style.cursor = isLocked ? 'not-allowed' : 'pointer';
-      });
-    }
+setTimeout(()=>{
+q.style.display="none";
+f.style.display="block";
+},400);
 
-    function showResult(key){
-      const c = choiceCopy[key];
-      if(!c) return;
+}
 
-      // Dialogue
-      addBubble(c.you, 'you');
-      addBubble(c.patient, 'patient');
+</script>
 
-      // Résultat
-      resultTitle.textContent = c.title;
-      resultText.textContent = c.text;
-      result.classList.add('show');
-      lockChoices(true);
-
-      // Annonce accessibilité
-      liveAnnounce.textContent = `${c.title}. Un bouton permet d'ouvrir le travail pour la réflexion éthique.`;
-
-      // Fallback lien
-      if(WORK_URL === "#"){
-        workLink.title = "Remplacez WORK_URL dans le script par le lien vers votre travail.";
-      }
-    }
-
-    document.querySelectorAll('[data-choice]').forEach(btn => {
-      btn.addEventListener('click', () => showResult(btn.dataset.choice));
-    });
-
-    restartBtn.addEventListener('click', () => {
-      // Reset chat: keep first 3 bubbles + meta
-      const keep = 4;
-      while(chat.children.length > keep){
-        chat.removeChild(chat.lastElementChild);
-      }
-      result.classList.remove('show');
-      lockChoices(false);
-      liveAnnounce.textContent = "";
-      chat.scrollTop = 0;
-    });
-  </script>
 </body>
 </html>
-
