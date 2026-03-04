@@ -7,16 +7,28 @@
 
 <style>
 :root{
+  /* mêmes couleurs qu’avant */
   --text:#0b1b2b;
+
+  /* améliorations design (ne changent pas la palette) */
+  --card: rgba(255,255,255,.78);
+  --card2: rgba(255,255,255,.62);
+  --stroke: rgba(11,27,43,.10);
+  --shadow: 0 24px 70px rgba(0,0,0,.16);
+  --shadow2: 0 12px 30px rgba(0,0,0,.10);
+  --radius: 22px;
+  --radius2: 14px;
 }
 
 *{box-sizing:border-box}
+html,body{height:100%}
 
 body{
   margin:0;
   font-family: system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
   color:var(--text);
 
+  /* même fond, inchangé */
   background:
     radial-gradient(900px 600px at 20% 10%, rgba(255,255,255,.9), transparent 60%),
     radial-gradient(700px 500px at 80% 20%, rgba(220,240,255,.9), transparent 60%),
@@ -25,77 +37,175 @@ body{
   display:flex;
   align-items:center;
   justify-content:center;
-  height:100vh;
+  padding:28px;
 }
 
 .container{
+  width:min(680px, 100%);
   text-align:center;
-  max-width:650px;
-  padding:40px;
-  background:rgba(255,255,255,.75);
-  backdrop-filter:blur(8px);
-  border-radius:20px;
-  box-shadow:0 20px 50px rgba(0,0,0,.15);
+
+  padding:44px 42px;
+  border-radius:var(--radius);
+
+  /* glass plus clean */
+  background: linear-gradient(180deg, var(--card), var(--card2));
+  border: 1px solid var(--stroke);
+  backdrop-filter: blur(10px);
+
+  box-shadow: var(--shadow);
+  position:relative;
+  overflow:hidden;
 }
 
+/* petite touche “premium” sans changer la couleur */
+.container::before{
+  content:"";
+  position:absolute;
+  inset:-2px;
+  background:
+    radial-gradient(520px 240px at 15% 0%, rgba(255,255,255,.85), transparent 60%),
+    radial-gradient(520px 240px at 85% 10%, rgba(255,255,255,.55), transparent 55%);
+  opacity:.55;
+  pointer-events:none;
+}
+
+.container > *{position:relative}
+
 h1{
-  margin:0 0 8px;
-  font-size:28px;
+  margin:0 0 10px;
+  font-size:30px;
+  letter-spacing:-.02em;
+  line-height:1.1;
 }
 
 .subtitle{
-  font-size:14px;
-  opacity:.7;
-  margin-bottom:25px;
+  display:inline-flex;
+  gap:8px;
+  align-items:center;
+  justify-content:center;
+
+  font-size:13.5px;
+  opacity:.78;
+  padding:8px 12px;
+  border:1px solid rgba(11,27,43,.10);
+  border-radius:999px;
+  background: rgba(255,255,255,.55);
+  box-shadow: var(--shadow2);
+
+  margin:0 0 18px;
+}
+
+.subtitle::before{
+  content:"";
+  width:8px;height:8px;border-radius:999px;
+  background: rgba(11,27,43,.55);
+  opacity:.45;
 }
 
 p{
-  line-height:1.6;
+  margin:0;
+  line-height:1.65;
+  font-size:15.5px;
+}
+
+.case{
+  margin:16px 0 12px;
+  opacity:.86;
+  font-weight:600;
+}
+
+.case span{display:block}
+
+.dilemma{
+  margin:0 0 10px;
+  opacity:.78;
+  font-size:14.5px;
+}
+
+.divider{
+  height:1px;
+  background: rgba(11,27,43,.10);
+  margin:18px 0 10px;
 }
 
 .choices{
-  margin-top:25px;
+  margin-top:18px;
   display:grid;
   gap:12px;
 }
 
+/* boutons plus clean, même couleur globale */
 button{
-  padding:14px;
-  border-radius:12px;
-  border:none;
-  background:#ffffff;
+  padding:14px 16px;
+  border-radius:var(--radius2);
+  border:1px solid rgba(11,27,43,.12);
+  background: rgba(255,255,255,.92);
+
   cursor:pointer;
-  font-size:15px;
-  transition:transform .15s ease, box-shadow .15s ease;
+  font-size:15.5px;
+  font-weight:650;
+  letter-spacing:-.01em;
+
+  box-shadow: 0 10px 22px rgba(0,0,0,.08);
+  transition: transform .14s ease, box-shadow .14s ease, background .14s ease, border-color .14s ease;
 }
 
 button:hover{
-  transform:translateY(-2px);
-  box-shadow:0 10px 20px rgba(0,0,0,.1);
+  transform: translateY(-2px);
+  box-shadow: 0 16px 30px rgba(0,0,0,.10);
+  border-color: rgba(11,27,43,.18);
+}
+
+button:active{
+  transform: translateY(0) scale(.99);
+}
+
+button:focus-visible{
+  outline:none;
+  box-shadow: 0 0 0 3px rgba(11,27,43,.12), 0 16px 30px rgba(0,0,0,.10);
 }
 
 .screen{
-  transition:opacity .4s ease, transform .4s ease;
+  transition:opacity .38s ease, transform .38s ease;
 }
 
 .hidden{
   opacity:0;
-  transform:translateY(-20px);
+  transform:translateY(-18px);
   pointer-events:none;
 }
 
 .final{
   display:none;
-  font-size:26px;
+  font-size:24px;
+  font-weight:650;
+  letter-spacing:-.01em;
+  line-height:1.25;
+  animation:fadeIn .55s ease forwards;
+}
+
+.final small{
+  display:block;
+  margin-top:10px;
+  font-size:14px;
   font-weight:500;
-  animation:fadeIn .6s ease forwards;
+  opacity:.72;
+  line-height:1.5;
 }
 
 @keyframes fadeIn{
-  from{opacity:0; transform:translateY(20px)}
+  from{opacity:0; transform:translateY(16px)}
   to{opacity:1; transform:translateY(0)}
 }
 
+/* responsive */
+@media (max-width:520px){
+  body{padding:18px}
+  .container{padding:34px 22px}
+  h1{font-size:26px}
+  p{font-size:15px}
+  .final{font-size:22px}
+}
 </style>
 </head>
 
@@ -103,49 +213,50 @@ button:hover{
 
 <div class="container">
 
-<div id="question" class="screen">
+  <div id="question" class="screen">
+    <h1>Décision aux urgences</h1>
+    <div class="subtitle">Service d'orthopédie</div>
 
-<h1>Décision aux urgences</h1>
-<div class="subtitle">Service d'orthopédie</div>
+    <p>Un patient âgé atteint de démence arrive avec une fracture du col du fémur.</p>
 
-<p>
-Un patient âgé atteint de démence arrive avec une fracture du col du fémur.
-</p>
+    <p class="case">
+      <span>Homme, 89 ans</span>
+      <span>Démence avancée</span>
+      <span>Chute à domicile</span>
+    </p>
 
-<p>
-Que faites‑vous ?
-</p>
+    <p class="dilemma">Le patient n'est pas capable de donner un consentement éclairé.</p>
 
-<div class="choices">
-<button onclick="choose()">Opérer</button>
-<button onclick="choose()">Ne pas opérer</button>
-<button onclick="choose()">Attendre</button>
-</div>
+    <div class="divider"></div>
 
-</div>
+    <p>Que faites-vous ?</p>
 
-<div id="final" class="final">
-Pour aller plus loin, lisez le travail afin d'explorer la réflexion éthique approfondie que soulève ce choix.
-</div>
+    <div class="choices">
+      <button type="button" onclick="choose()">Opérer</button>
+      <button type="button" onclick="choose()">Ne pas opérer</button>
+      <button type="button" onclick="choose()">Attendre</button>
+    </div>
+  </div>
+
+  <div id="final" class="final">
+    Cette décision soulève plusieurs questions éthiques.
+    <small>Le travail propose une réflexion approfondie sur les enjeux liés à ce choix.</small>
+  </div>
 
 </div>
 
 <script>
-
 function choose(){
+  const q = document.getElementById("question");
+  const f = document.getElementById("final");
 
-const q = document.getElementById("question");
-const f = document.getElementById("final");
+  q.classList.add("hidden");
 
-q.classList.add("hidden");
-
-setTimeout(()=>{
-q.style.display="none";
-f.style.display="block";
-},400);
-
+  setTimeout(()=>{
+    q.style.display="none";
+    f.style.display="block";
+  },380);
 }
-
 </script>
 
 </body>
